@@ -18,7 +18,7 @@ def write_db():
 @app.route("/")
 def welcome():
     content = read_db()
-    return render_template("index.html", content=content, stock=manager.stock)
+    return render_template("index.html", content=content, stock=manager.stock, account=manager.account)
 
 
 @app.route("/names/<name>/")
