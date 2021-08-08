@@ -1,0 +1,7 @@
+System accountant: <br />
+
+{% for row in content %}
+    {% if row.profession == "nazwix33" %}<b>{% endif %}
+    <a href="/names/{{row.name}}">{{row.name}}</a><br />
+    {% if row.profession == "nazwix33" %}</b>{% endif %}
+{% endfor %}

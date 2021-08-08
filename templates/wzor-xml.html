@@ -1,0 +1,48 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Tytuł strony</title>
+  <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
+</head>
+<body>
+  <div class="container">
+    <div class="columns">
+      <div class="col-4">
+        </div>
+        <div class="col-8">
+          <h1>Lista imion userów</h1>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Profession</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for row in content %}
+              <tr>
+            <td>{{row.name}}</td>
+            <td>{{row.profession}}</td>
+          </tr>
+          {% endfor %}
+      </tbody>
+    </table>
+          <form method="POST" action="/main">
+            <div class="form-group">
+              <label class="form-label" for="input-example-1">Name</label>
+              <input required="required" class="form-input" name="name" type="text" id="input-example-1" placeholder="Name">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="input-example-1">Profession</label>
+              <input required="required" class="form-input" name="profession" type="text" id="input-example-2" placeholder="Profession">
+            </div>
+            <button class="btn btn-success" type="submit">Wyślij</button>
+          </form>
+  </div>
+</div>
+</div>
+</body>
+</html>

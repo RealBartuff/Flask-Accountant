@@ -1,4 +1,4 @@
-import json
+"""import json
 from flask import Flask, render_template, request, redirect
 
 
@@ -46,4 +46,4 @@ def main():
 
 
 #w input type html może być number zamiast text
-#min max i step do dodawania liczb, step nie jest konieczny
+#min max i step do dodawania liczb, step nie jest konieczny"""
