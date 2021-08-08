@@ -1,9 +1,11 @@
 import json
 from manager import Manager, FileHandler
+from accountant import manager
 from flask import Flask, render_template, request, redirect
 
 
 app = Flask(__name__)
+manager.process()
 
 def read_db():
     with open("in.txt", "r") as f:
@@ -16,10 +18,10 @@ def write_db():
 @app.route("/")
 def welcome():
     content = read_db()
-    return render_template("index.html", content=content)
+    return render_template("index.html", content=content, stock=manager.stock)
 
 
-"""@app.route("/names/<name>/")
+@app.route("/names/<name>/")
 def jaje(name):
     content = read_db()
     for row in content:
@@ -37,7 +39,7 @@ def main():
         return redirect("/main/")
     #print(request.args["name"])
     #print(request.form["name"], request.form["profession"])
-    return render_template("wzor-xml.html", content=content)"""
+    return render_template("wzor-xml.html", content=content)
 
 
 
