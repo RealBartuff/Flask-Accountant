@@ -1,5 +1,4 @@
 import json
-from manager import Manager, FileHandler
 from accountant import manager
 from flask import Flask, render_template, request, redirect
 
@@ -37,14 +36,11 @@ def balance():
     return render_template("saldo.html")
 
 
-@app.route("/names/<name>/")
-def jaje(name):
-    content = read_db()
-    for row in content:
-        if row["name"] != name:
-            continue
-        return row["profession"]
-    return "Nie znaleziono"
+@app.route("/historia/")
+def saldoo():
+    content = manager.history
+    return render_template("historia.html", content=content)
+
 
 @app.route("/main/", methods=["GET", "POST"])
 def main():
@@ -62,3 +58,12 @@ def main():
 
 #w input type html może być number zamiast text
 #min max i step do dodawania liczb, step nie jest konieczny
+
+"""@app.route("/names/<name>/")
+def jaje(name):
+    content = read_db()
+    for row in content:
+        if row["name"] != name:
+            continue
+        return row["profession"]
+    return "Nie znaleziono"""
