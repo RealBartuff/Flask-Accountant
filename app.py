@@ -21,6 +21,12 @@ def welcome():
     return render_template("index.html", content=content, stock=manager.stock, account=manager.account)
 
 
+@app.route("/zakup/")
+
+@app.route("/sprzedaz/")
+@app.route("/saldo/")
+
+
 @app.route("/names/<name>/")
 def jaje(name):
     content = read_db()
