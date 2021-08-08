@@ -1,28 +1,25 @@
-"""import json
+import json
+from manager import Manager, FileHandler
 from flask import Flask, render_template, request, redirect
 
 
 app = Flask(__name__)
 
 def read_db():
-    with open("baza.txt", "r") as f:
-        content = json.loads(f.read())
-        return content
+    with open("in.txt", "r") as f:
+        content = f.read()
+    return content
 
-def write_db(content):
-    with open("baza.txt", "w") as f:
-        f.write(json.dumps(content))
+def write_db():
+    return FileHandler.write_history
 
 @app.route("/")
 def welcome():
     content = read_db()
     return render_template("index.html", content=content)
 
-    #Skrócony zapis tego co poniżej:
-    #first_name = content[0]["name"]
-    #return "<br />".join([row["name"] for row in content])
 
-@app.route("/names/<name>/")
+"""@app.route("/names/<name>/")
 def jaje(name):
     content = read_db()
     for row in content:
@@ -40,10 +37,10 @@ def main():
         return redirect("/main/")
     #print(request.args["name"])
     #print(request.form["name"], request.form["profession"])
-    return render_template("wzor-xml.html", content=content)
+    return render_template("wzor-xml.html", content=content)"""
 
 
 
 
 #w input type html może być number zamiast text
-#min max i step do dodawania liczb, step nie jest konieczny"""
+#min max i step do dodawania liczb, step nie jest konieczny
