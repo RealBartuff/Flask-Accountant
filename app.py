@@ -23,9 +23,18 @@ def welcome():
 
 
 @app.route("/zakup/")
+def buy():
+    return render_template("zakup.html")
+
 
 @app.route("/sprzedaz/")
+def sell():
+    return render_template("sprzedaz.html")
+
+
 @app.route("/saldo/")
+def balance():
+    return render_template("saldo.html")
 
 
 @app.route("/names/<name>/")
