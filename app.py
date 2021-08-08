@@ -7,13 +7,14 @@ from flask import Flask, render_template, request, redirect
 app = Flask(__name__)
 manager.process()
 
+
 def read_db():
-    with open("in.txt", "r") as f:
-        content = f.read()
-    return content
+    return manager.reader
+
 
 def write_db():
-    return FileHandler.write_history
+    return manager.save()
+
 
 @app.route("/")
 def welcome():
