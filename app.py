@@ -21,9 +21,13 @@ def welcome():
     return render_template("index.html", content=content, stock=manager.stock, account=manager.account)
 
 
-@app.route("/zakup/")
+@app.route("/zakup/", methods=["GET", "POST"])
 def buy():
-    return render_template("zakup.html")
+    content = read_db()
+    if request.method == "POST":
+        manager.process_action(request.form["Produkt"], request.form["Cena"], request.form["Ilość"])
+        write_db()
+    return render_template("zakup.html", content=content)
 
 
 @app.route("/sprzedaz/")
@@ -37,8 +41,10 @@ def balance():
 
 
 @app.route("/historia/")
-def saldoo():
-    content = manager.history
+@app.route("/historia/<od>/")
+@app.route("/historia/<od>/<do>/")
+def history(od=None, do=None):
+    content = manager.history[int(od):int(do)]
     return render_template("historia.html", content=content)
 
 
