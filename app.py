@@ -44,8 +44,15 @@ def balance():
 @app.route("/historia/<od>/")
 @app.route("/historia/<od>/<do>/")
 def history(od=None, do=None):
-    content = manager.history[int(od):int(do)]
-    return render_template("historia.html", content=content)
+    if od and do:
+        content = manager.history[int(od):int(do)]
+        return render_template("historia.html", content=content)
+    elif not do and od:
+        content = manager.history[int(od):]
+        return render_template("historia.html", content=content)
+    else:
+        content = manager.history
+        return render_template("historia.html", content=content)
 
 
 @app.route("/main/", methods=["GET", "POST"])
