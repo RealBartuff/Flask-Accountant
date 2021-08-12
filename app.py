@@ -23,9 +23,10 @@ def welcome():
 
 @app.route("/zakup/", methods=["GET", "POST"])
 def buy():
+    # return str(request.form)
     content = read_db()
     if request.method == "POST":
-        manager.process_action(request.form["Produkt"], request.form["Cena"], request.form["Ilość"])
+        manager.process_action("zakup", [request.form["Produkt"], request.form["Cena"], request.form["Ilosc"]])
         write_db()
     return render_template("zakup.html", content=content)
 
@@ -55,16 +56,16 @@ def history(od=None, do=None):
         return render_template("historia.html", content=content)
 
 
-@app.route("/main/", methods=["GET", "POST"])
+@app.route("/", methods=["GET", "POST"])
 def main():
     content = read_db()
     if request.method == "POST":
-        content.append({"name": request.form["name"], "profession": request.form["profession"]})
-        write_db(content)
-        return redirect("/main/")
+        # content.append({"name": request.form["name"], "profession": request.form["profession"]})
+        write_db()
+        return redirect("/")
     #print(request.args["name"])
     #print(request.form["name"], request.form["profession"])
-    return render_template("wzor-xml.html", content=content)
+    return render_template("zakup.html", content=content)
 
 
 
