@@ -23,22 +23,32 @@ def welcome():
 
 @app.route("/zakup/", methods=["GET", "POST"])
 def buy():
-    # return str(request.form)
     content = read_db()
     if request.method == "POST":
         manager.process_action("zakup", [request.form["Produkt"], request.form["Cena"], request.form["Ilosc"]])
         write_db()
+        return redirect("/")
     return render_template("zakup.html", content=content)
 
 
-@app.route("/sprzedaz/")
+@app.route("/sprzedaz/", methods=["GET", "POST"])
 def sell():
-    return render_template("sprzedaz.html")
+    content = read_db()
+    if request.method == "POST":
+        manager.process_action("sprzedaz", [request.form["Produkt"], request.form["Cena"], request.form["Ilosc"]])
+        write_db()
+        return redirect("/")
+    return render_template("sprzedaz.html", content=content)
 
 
-@app.route("/saldo/")
+@app.route("/saldo/", methods=["GET", "POST"])
 def balance():
-    return render_template("saldo.html")
+    content = read_db()
+    if request.method == "POST":
+        manager.process_action("saldo", [request.form["Kwota"], request.form["Komentarz"]])
+        write_db()
+        return redirect("/")
+    return render_template("saldo.html", content=content)
 
 
 @app.route("/historia/")
@@ -60,24 +70,6 @@ def history(od=None, do=None):
 def main():
     content = read_db()
     if request.method == "POST":
-        # content.append({"name": request.form["name"], "profession": request.form["profession"]})
         write_db()
         return redirect("/")
-    #print(request.args["name"])
-    #print(request.form["name"], request.form["profession"])
     return render_template("zakup.html", content=content)
-
-
-
-
-#w input type html może być number zamiast text
-#min max i step do dodawania liczb, step nie jest konieczny
-
-"""@app.route("/names/<name>/")
-def jaje(name):
-    content = read_db()
-    for row in content:
-        if row["name"] != name:
-            continue
-        return row["profession"]
-    return "Nie znaleziono"""

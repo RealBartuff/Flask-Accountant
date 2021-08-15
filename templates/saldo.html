@@ -5,14 +5,16 @@
     <title>SALDO</title>
 </head>
 <body>
+<form method="POST" action="/saldo/">
 <div class="form-group">
-  <label class="form-label" for="input-example-1">Komentarz: </label>
-  <input class="form-input" type="text" id="input-example-1" placeholder="np: składka ZUS"><br />
-  <br />
   <label class="form-label" for="input-example-1">Kwota: </label>
-  <input class="form-input" type="number" id="input-example-2" placeholder="Podana w złotówkach"><br />
+  <input class="form-input" name="Kwota" type="number" id="input-example-2" placeholder="Podana w złotówkach"><br />
   <br />
-  <button class="btn btn-success">Wyślij</button>
+  <label class="form-label" for="input-example-2">Komentarz: </label>
+  <input class="form-input" name="Komentarz" type="text" id="input-example-1" placeholder="np: składka ZUS"><br />
+  <br />
+  <button class="btn btn-success" type="submit">Wyślij</button>
 </div>
+</form>
 </body>
 </html>

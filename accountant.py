@@ -8,6 +8,7 @@ manager = Manager(reader)
 @manager.action("saldo", 2)
 def saldo(manager, rows):
     price = float(rows[0])
+    comment = rows[1]
     manager.modify_account(price)
     return True
 

@@ -5,17 +5,19 @@
     <title>SPRZEDAZ</title>
 </head>
 <body>
+<form method="POST" action="/sprzedaz/">
 <div class="form-group">
   <label class="form-label" for="input-example-1">Produkt: </label>
-  <input class="form-input" type="text" id="input-example-1" placeholder="np: Arduino"><br />
+  <input class="form-input" name="Produkt" type="text" id="input-example-1" placeholder="np: Arduino"><br />
   <br />
-  <label class="form-label" for="input-example-1">Cena: </label>
-  <input class="form-input" type="number" id="input-example-2" placeholder="Podana w złotówkach"><br />
+  <label class="form-label" for="input-example-2">Cena: </label>
+  <input class="form-input" name="Cena" type="number" id="input-example-2" placeholder="Podana w złotówkach"><br />
   <br />
-  <label class="form-label" for="input-example-1">Ilość: </label>
-  <input class="form-input" type="number" id="input-example-3" placeholder="Sprzedanych sztuk"><br />
+  <label class="form-label" for="input-example-3">Ilość: </label>
+  <input class="form-input" name="Ilosc" type="number" id="input-example-3" placeholder="Sprzedanych sztuk"><br />
   <br />
-  <button class="btn btn-success">Wyślij</button>
+  <button class="btn btn-success" type="submit">Wyślij</button>
 </div>
+</form>
 </body>
 </html>
