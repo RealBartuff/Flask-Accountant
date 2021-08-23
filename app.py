@@ -1,8 +1,8 @@
-import sys
+
 from accountant import manager
 from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
-
+from flask_alembic import Alembic
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -27,32 +27,25 @@ class Stock(db.Model):
 
 class Account(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    account = db.Column(db.Integer, unique=False)
+    account = db.Column(db.Integer, unique=False, nullable=False)
 
 
 db.create_all()
-"""manager.process()
-
-
-def read_db():
-    return manager.reader
-
-def write_db():
-    return manager.save()"""
 
 
 @app.route("/", methods=["GET", "POST"])
 def welcome():
     stock = db.session.query(Stock).all()
-    funds = db.session.query(Account).filter(Account.id == 1).first()
-    account = funds.account
+    account = db.session.query(Account).filter(Account.id == 1).first()
+    account = account.account if account else 0
     return render_template("index.html", stock=stock, account=account)
 
 
 @app.route("/saldo/", methods=["GET", "POST"])
 def balance():
+    account = db.session.query(Account).filter(Account.id == 1).first()
     if request.method == "POST":
-        if welcome.account + int(request.form["Kwota"]) < 0:
+        if account.account + int(request.form["Kwota"]) < 0:
             raise Exception("Niewystarczające środki.")
         log = History(
             what_action="saldo",
@@ -60,9 +53,9 @@ def balance():
             second_action=request.form["Komentarz"],
             third_action=None
         )
-        val = welcome.account + int(request.form["Kwota"])
+        account.account += int(request.form["Kwota"])
         db.session.add(log)
-        db.session.add(val)
+        db.session.add(account)
         db.session.commit()
         return redirect("/")
     return render_template("saldo.html")
@@ -70,16 +63,17 @@ def balance():
 
 @app.route("/zakup/", methods=["GET", "POST"])
 def buy():
+    account = db.session.query(Account).filter(Account.id == 1).first()
     if request.method == "POST":
-        if welcome.account - (int(request.form["Cena"]) * int(request.form["Ilosc"])) < 0:
+        if account.account - (int(request.form["Cena"]) * int(request.form["Ilosc"])) < 0:
             raise Exception("Niewystarczające środki.")
         purchase = Stock(
             product=request.form["Produkt"],
             qty=request.form["Ilosc"]
         )
         db.session.add(purchase)
-        val = welcome.account - (int(request.form["Cena"]) * int(request.form["Ilosc"]))
-        db.session.add(val)
+        account.account -= (int(request.form["Cena"]) * int(request.form["Ilosc"]))
+        db.session.add(account)
         log = History(
             what_action="zakup",
             first_action=request.form["Produkt"],
@@ -94,19 +88,19 @@ def buy():
 
 @app.route("/sprzedaz/", methods=["GET", "POST"])
 def sell():
+    stock = db.session.query(Stock).filter(Stock.product).first()
     if request.method == "POST":
-        if int(welcome.stock.qty) - int(request.form["Ilosc"]) < 0:
-            raise Exception("Za mało towaru w magazynie.")
-        if request.form["Produkt"] not in welcome.stock.product:
+        if stock.product != request.form["Produkt"]:
             raise Exception("Brak towaru w magazynie.")
         sale = Stock(
             product=request.form["Produkt"],
             qty=request.form["Ilosc"]
         )
-        welcome.stock.qty -= int(request.form["Ilosc"])
+        account = db.session.query(Account).filter(Account.id == 1).first()
+        stock.qty -= int(request.form["Ilosc"])
         db.session.add(sale)
-        val = welcome.account + (int(request.form["Cena"]) * int(request.form["Ilosc"]))
-        db.session.add(val)
+        account.account += (int(request.form["Cena"]) * int(request.form["Ilosc"]))
+        db.session.add(account)
         log = History(
             what_action="sprzedaz",
             first_action=request.form["Produkt"],
@@ -123,13 +117,15 @@ def sell():
 @app.route("/historia/<od>/")
 @app.route("/historia/<od>/<do>/")
 def history(od=None, do=None):
-    history = db.session.query(History).all()
+    content = db.session.query(History).all()
     if od and do:
-        content = manager.history[int(od):int(do)]
+        x = db.session.query(Account).filter(Account.id == od).first()
+        y = db.session.query(Account).filter(Account.id == do).last()
+        content = x, y
         return render_template("historia.html", content=content)
     elif not do and od:
-        content = manager.history[int(od):]
+        content = db.session.query(Account).filter(Account.id == od).first()
         return render_template("historia.html", content=content)
     else:
-        content = manager.history
+        content = db.session.query(History).all()
         return render_template("historia.html", content=content)

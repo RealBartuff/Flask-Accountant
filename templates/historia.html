@@ -1,8 +1,15 @@
 
 Historia: <br />
 <br />
-{% for row in content %}
-    {% for i in row %}
-        {% print(i) %}<br />
-    {% endfor %}
-{% endfor %}
+ <tbody>
+  {% for value in history %}
+
+    <tr class="active">
+        <td>{{ value.what_action }}<br></td>
+        <td>{{ value.first_action }}<br></td>
+        <td>{{ value.second_action }}<br></td>
+        <td>{% if value.third_action == None %} {{ '' }} {% else %} {{ value.third_action }} {% endif %}<br></td>
+    </tr>
+
+   {% endfor %}
+  </tbody>

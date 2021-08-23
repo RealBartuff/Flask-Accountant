@@ -4,10 +4,14 @@
 System accountant: <br />
 <br />
 Stan magazynu: <br />
-{{ stock }}<br />
+{% for item in stock %}
+    <td>{{ item.product }}</td>
+    <td>{{ item.qty }}</td>
+{% endfor %}
+<br />
 <br />
 Saldo: <br />
-{{ account }} <br />
+{% print(account) %} <br />
 <br />
 Wykonaj: <br />
 <a href="/zakup/">Zakup</a><br />
