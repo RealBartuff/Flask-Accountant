@@ -2,14 +2,11 @@
 Historia: <br />
 <br />
  <tbody>
-  {% for value in history %}
-
-    <tr class="active">
-        <td>{{ value.what_action }}<br></td>
-        <td>{{ value.first_action }}<br></td>
-        <td>{{ value.second_action }}<br></td>
-        <td>{% if value.third_action == None %} {{ '' }} {% else %} {{ value.third_action }} {% endif %}<br></td>
-    </tr>
-
-   {% endfor %}
+  {% for i in content %}
+    {{ i.what_action }}<br />
+    {{ i.first_action }}<br />
+    {{ i.second_action }}<br />
+    {{ i.third_action }}<br />
+  <br />
+  {% endfor %}
   </tbody>
