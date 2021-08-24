@@ -13,7 +13,7 @@ db = SQLAlchemy(app)
 
 class History(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    what_action = db.Column(db.Integer, unique=False)
+    what_action = db.Column(db.String(12), unique=False)
     first_action = db.Column(db.Integer, unique=False)
     second_action = db.Column(db.String(120), unique=False)
     third_action = db.Column(db.Integer, unique=False)

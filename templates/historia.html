@@ -6,7 +6,7 @@ Historia: <br />
     {{ i.what_action }}<br />
     {{ i.first_action }}<br />
     {{ i.second_action }}<br />
-    {{ i.third_action }}<br />
+    {% if i.third_action == None %} {{ '' }} {% else %} {{ i.third_action }} {% endif %}<br />
   <br />
   {% endfor %}
   </tbody>
