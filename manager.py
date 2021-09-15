@@ -1,4 +1,3 @@
-
 class NotEnoughDataException(Exception):
     pass
 
@@ -41,6 +40,7 @@ class Manager:
     def action(self, name, parameters):
         def action_in(callback):
             self.actions[name] = (parameters, callback)
+
         return action_in
 
     def process_action(self, action, rows):
@@ -53,7 +53,7 @@ class Manager:
     def process(self):
         while True:
             action = self.reader.get_line()[0]
-            if action == 'stop':
+            if action == "stop":
                 break
             if action not in self.actions:
                 raise NoActionException()
@@ -62,7 +62,7 @@ class Manager:
             self.process_action(action, rows)
 
     def review(self, start, end):
-        return self.history[int(start):int(end)]
+        return self.history[int(start) : int(end)]
 
     def save(self):
         self.reader.write_history(self.history)

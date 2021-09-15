@@ -1,12 +1,13 @@
-
 from accountant import manager
 from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_alembic import Alembic
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db' #test db to nazwa pliku w którym utworzymy bazę danych
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config[
+    "SQLALCHEMY_DATABASE_URI"
+] = "sqlite:///test.db"  # test db to nazwa pliku w którym utworzymy bazę danych
 
 db = SQLAlchemy(app)
 
@@ -53,7 +54,7 @@ def balance():
             what_action="saldo",
             first_action=request.form["Kwota"],
             second_action=request.form["Komentarz"],
-            third_action=None
+            third_action=None,
         )
         funds.account += int(request.form["Kwota"])
         db.session.add(log)
@@ -69,18 +70,15 @@ def buy():
     if request.method == "POST":
         if funds.account - (int(request.form["Cena"]) * int(request.form["Ilosc"])) < 0:
             raise Exception("Niewystarczające środki.")
-        purchase = Stock(
-            product=request.form["Produkt"],
-            qty=request.form["Ilosc"]
-        )
+        purchase = Stock(product=request.form["Produkt"], qty=request.form["Ilosc"])
         db.session.add(purchase)
-        funds.account -= (int(request.form["Cena"]) * int(request.form["Ilosc"]))
+        funds.account -= int(request.form["Cena"]) * int(request.form["Ilosc"])
         db.session.add(funds)
         log = History(
             what_action="zakup",
             first_action=request.form["Produkt"],
             second_action=request.form["Cena"],
-            third_action=request.form["Ilosc"]
+            third_action=request.form["Ilosc"],
         )
         db.session.add(log)
         db.session.commit()
@@ -91,18 +89,22 @@ def buy():
 @app.route("/sprzedaz/", methods=["GET", "POST"])
 def sell():
     if request.method == "POST":
-        stock = db.session.query(Stock).filter(Stock.product == request.form["Produkt"]).first()
+        stock = (
+            db.session.query(Stock)
+            .filter(Stock.product == request.form["Produkt"])
+            .first()
+        )
         if stock.product != request.form["Produkt"]:
             raise Exception("Brak towaru w magazynie.")
         funds = db.session.query(Account).filter(Account.id == 1).first()
         stock.qty -= int(request.form["Ilosc"])
-        funds.account += (int(request.form["Cena"]) * int(request.form["Ilosc"]))
+        funds.account += int(request.form["Cena"]) * int(request.form["Ilosc"])
         db.session.add(funds)
         log = History(
             what_action="sprzedaz",
             first_action=request.form["Produkt"],
             second_action=request.form["Cena"],
-            third_action=request.form["Ilosc"]
+            third_action=request.form["Ilosc"],
         )
         db.session.add(log)
         db.session.commit()
@@ -115,7 +117,12 @@ def sell():
 @app.route("/historia/<od>/<do>/")
 def history(od=None, do=None):
     if od and do:
-        content = db.session.query(History).filter(History.id >= od).filter(History.id <= do).all()
+        content = (
+            db.session.query(History)
+            .filter(History.id >= od)
+            .filter(History.id <= do)
+            .all()
+        )
     elif not do and od:
         content = db.session.query(History).filter(History.id >= od).all()
     else:
